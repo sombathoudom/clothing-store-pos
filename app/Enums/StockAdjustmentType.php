@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Enums;
+
+enum StockAdjustmentType: string
+{
+    case Add = 'add';
+    case Remove = 'remove';
+
+    /**
+     * @return list<string>
+     */
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
+}
