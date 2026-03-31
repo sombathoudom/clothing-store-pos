@@ -40,6 +40,7 @@ test('admins can update business settings', function () {
         'riel_exchange_rate' => 4200,
         'low_stock_threshold' => 7,
         'receipt_footer' => 'Thanks again',
+        'receipt_paper_width' => '80mm',
         'printer_ip' => '192.168.1.25',
         'printer_port' => 9100,
     ]);
@@ -52,5 +53,6 @@ test('admins can update business settings', function () {
     expect(Setting::query()->where('key', SettingKey::InvoiceNextNumber->value)->value('value'))->toBe('12');
     expect(Setting::query()->where('key', SettingKey::RielExchangeRate->value)->value('value'))->toBe('4200');
     expect(Setting::query()->where('key', SettingKey::LowStockThreshold->value)->value('value'))->toBe('7');
+    expect(Setting::query()->where('key', SettingKey::ReceiptPaperWidth->value)->value('value'))->toBe('80mm');
     expect(Setting::query()->where('key', SettingKey::PrinterIp->value)->value('value'))->toBe('192.168.1.25');
 });

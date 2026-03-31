@@ -4,6 +4,7 @@ namespace App\Http\Requests\Settings;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BusinessSettingsUpdateRequest extends FormRequest
 {
@@ -31,6 +32,7 @@ class BusinessSettingsUpdateRequest extends FormRequest
             'store_name' => ['required', 'string', 'max:255'],
             'store_phone' => ['nullable', 'string', 'max:255'],
             'receipt_footer' => ['nullable', 'string', 'max:500'],
+            'receipt_paper_width' => ['required', Rule::in(['58mm', '80mm'])],
             'printer_ip' => ['nullable', 'ip'],
             'printer_port' => ['required', 'integer', 'min:1', 'max:65535'],
         ];

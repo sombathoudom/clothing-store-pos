@@ -12,6 +12,14 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { formatCurrency, formatNumber } from '@/lib/format';
 import { edit } from '@/routes/business-settings';
 
@@ -25,6 +33,7 @@ type Props = {
         store_name: string;
         store_phone: string;
         receipt_footer: string;
+        receipt_paper_width: string;
         printer_ip: string;
         printer_port: string;
     };
@@ -98,6 +107,7 @@ export default function BusinessSettings({ settings, invoicePreview }: Props) {
                                 {settings.printer_ip || 'Not configured'}
                             </p>
                             <p>Printer port: {settings.printer_port}</p>
+                            <p>Paper width: {settings.receipt_paper_width}</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -295,6 +305,37 @@ export default function BusinessSettings({ settings, invoicePreview }: Props) {
                                             />
                                             <InputError
                                                 message={errors.receipt_footer}
+                                            />
+                                        </div>
+
+                                        <div className="grid gap-2">
+                                            <Label htmlFor="receipt_paper_width">
+                                                Receipt paper width
+                                            </Label>
+                                            <Select
+                                                name="receipt_paper_width"
+                                                defaultValue={
+                                                    settings.receipt_paper_width
+                                                }
+                                            >
+                                                <SelectTrigger id="receipt_paper_width">
+                                                    <SelectValue placeholder="Select paper width" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        <SelectItem value="58mm">
+                                                            58mm
+                                                        </SelectItem>
+                                                        <SelectItem value="80mm">
+                                                            80mm
+                                                        </SelectItem>
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                            <InputError
+                                                message={
+                                                    errors.receipt_paper_width
+                                                }
                                             />
                                         </div>
                                     </div>

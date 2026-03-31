@@ -151,6 +151,7 @@ class SaleController extends Controller
                 'name' => $businessSettings->get(SettingKey::StoreName),
                 'phone' => $businessSettings->get(SettingKey::StorePhone),
                 'footer' => $businessSettings->get(SettingKey::ReceiptFooter),
+                'paper_width' => $businessSettings->get(SettingKey::ReceiptPaperWidth),
             ],
         ]);
     }

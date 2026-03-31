@@ -73,6 +73,7 @@ class BusinessSettings
             SettingKey::StoreName->value => config('app.name', 'Clothing POS'),
             SettingKey::StorePhone->value => '',
             SettingKey::ReceiptFooter->value => 'Thank you for shopping with us.',
+            SettingKey::ReceiptPaperWidth->value => '58mm',
             SettingKey::PrinterIp->value => '',
             SettingKey::PrinterPort->value => '9100',
         ];

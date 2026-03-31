@@ -12,6 +12,7 @@ enum SettingKey: string
     case StoreName = 'store_name';
     case StorePhone = 'store_phone';
     case ReceiptFooter = 'receipt_footer';
+    case ReceiptPaperWidth = 'receipt_paper_width';
     case PrinterIp = 'printer_ip';
     case PrinterPort = 'printer_port';
 

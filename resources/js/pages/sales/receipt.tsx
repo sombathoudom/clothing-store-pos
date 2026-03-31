@@ -12,6 +12,7 @@ type Props = {
         name: string;
         phone: string;
         footer: string;
+        paper_width: string;
     };
     sale: {
         id: number;
@@ -37,13 +38,35 @@ type Props = {
 
 export default function SalesReceipt({ store, sale }: Props) {
     const printForm = useForm({});
+    const receiptWidthClass =
+        store.paper_width === '80mm'
+            ? 'print:max-w-[460px] max-w-md'
+            : 'print:max-w-[320px] max-w-sm';
+
+    const labels = {
+        receipt: 'Receipt / វិក្កយបត្រ',
+        invoice: 'Invoice / លេខវិក្កយបត្រ',
+        date: 'Date / កាលបរិច្ឆេទ',
+        customer: 'Customer / អតិថិជន',
+        walkIn: 'Walk-in / ដើរចូល',
+        subtotal: 'Subtotal / សរុបមុនបញ្ចុះតម្លៃ',
+        discount: 'Discount / បញ្ចុះតម្លៃ',
+        total: 'Total / សរុបចុងក្រោយ',
+        quantity: 'Qty / ចំនួន',
+        price: 'Price / តម្លៃ',
+        size: 'Size / ទំហំ',
+        browserPrint: 'Browser print / បោះពុម្ពតាមកម្មវិធីរុករក',
+        sendPrinter: 'Send to XPrinter / ផ្ញើទៅម៉ាស៊ីនបោះពុម្ព',
+    };
 
     return (
         <>
             <Head title={`${sale.invoice_no} receipt`} />
 
             <div className="min-h-screen bg-neutral-100 p-4 print:bg-white print:p-0">
-                <div className="mx-auto flex max-w-sm flex-col gap-4 print:max-w-[320px] print:gap-0">
+                <div
+                    className={`mx-auto flex flex-col gap-4 print:gap-0 ${receiptWidthClass}`}
+                >
                     <div className="flex items-center justify-between print:hidden">
                         <Button variant="outline" asChild>
                             <Link href={show(sale.id)} prefetch>
@@ -55,7 +78,7 @@ export default function SalesReceipt({ store, sale }: Props) {
                                 variant="outline"
                                 onClick={() => window.print()}
                             >
-                                Browser print
+                                {labels.browserPrint}
                             </Button>
                             <Button
                                 disabled={printForm.processing}
@@ -65,7 +88,7 @@ export default function SalesReceipt({ store, sale }: Props) {
                                     })
                                 }
                             >
-                                Send to XPrinter
+                                {labels.sendPrinter}
                             </Button>
                         </div>
                     </div>
@@ -80,25 +103,27 @@ export default function SalesReceipt({ store, sale }: Props) {
                                     {store.phone}
                                 </p>
                             ) : null}
-                            <p className="mt-2 text-xs tracking-[0.2em] text-muted-foreground uppercase">
-                                Receipt
+                            <p className="mt-2 text-xs tracking-[0.12em] text-muted-foreground uppercase">
+                                {labels.receipt}
                             </p>
                         </div>
 
                         <div className="mt-4 border-t border-dashed pt-4 text-sm">
                             <div className="flex items-center justify-between gap-4">
-                                <span>Invoice</span>
+                                <span>{labels.invoice}</span>
                                 <span className="font-medium">
                                     {sale.invoice_no}
                                 </span>
                             </div>
                             <div className="mt-1 flex items-center justify-between gap-4">
-                                <span>Date</span>
+                                <span>{labels.date}</span>
                                 <span>{formatDateTime(sale.sold_at)}</span>
                             </div>
                             <div className="mt-1 flex items-center justify-between gap-4">
-                                <span>Customer</span>
-                                <span>{sale.customer_name ?? 'Walk-in'}</span>
+                                <span>{labels.customer}</span>
+                                <span>
+                                    {sale.customer_name ?? labels.walkIn}
+                                </span>
                             </div>
                         </div>
 
@@ -111,7 +136,7 @@ export default function SalesReceipt({ store, sale }: Props) {
                                                 {item.product_name}
                                             </p>
                                             <p className="text-muted-foreground">
-                                                Size {item.size}
+                                                {labels.size} {item.size}
                                             </p>
                                         </div>
                                         <div className="text-right">
@@ -119,6 +144,7 @@ export default function SalesReceipt({ store, sale }: Props) {
                                                 {formatCurrency(item.subtotal)}
                                             </p>
                                             <p className="text-muted-foreground">
+                                                {labels.quantity}{' '}
                                                 {formatNumber(item.qty)} x{' '}
                                                 {formatCurrency(
                                                     item.sell_price,
@@ -132,15 +158,15 @@ export default function SalesReceipt({ store, sale }: Props) {
 
                         <div className="mt-4 border-t border-dashed pt-4 text-sm">
                             <div className="flex items-center justify-between gap-4">
-                                <span>Subtotal</span>
+                                <span>{labels.subtotal}</span>
                                 <span>{formatCurrency(sale.total_amount)}</span>
                             </div>
                             <div className="mt-1 flex items-center justify-between gap-4">
-                                <span>Discount</span>
+                                <span>{labels.discount}</span>
                                 <span>{formatCurrency(sale.discount)}</span>
                             </div>
                             <div className="mt-2 flex items-center justify-between gap-4 text-base font-semibold">
-                                <span>Total</span>
+                                <span>{labels.total}</span>
                                 <span>{formatCurrency(sale.final_amount)}</span>
                             </div>
                             <div className="mt-1 flex items-center justify-between gap-4 text-muted-foreground">

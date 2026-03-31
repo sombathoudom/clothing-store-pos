@@ -2,7 +2,9 @@
 
 use App\Enums\PermissionName;
 use App\Enums\SaleStatus;
+use App\Enums\SettingKey;
 use App\Models\Sale;
+use App\Models\Setting;
 use App\Models\User;
 use App\Support\ThermalReceiptPrinter;
 use Spatie\Permission\Models\Permission;
@@ -54,6 +56,11 @@ test('sales detail shows saved invoice data', function () {
 test('users with sales permission can view receipt page', function () {
     $user = User::factory()->create();
     $user->givePermissionTo(PermissionName::ViewSales->value);
+    Setting::updateOrCreate([
+        'key' => SettingKey::ReceiptPaperWidth->value,
+    ], [
+        'value' => '80mm',
+    ]);
 
     $sale = Sale::factory()->create([
         'invoice_no' => 'INV-REC-001',
@@ -66,6 +73,7 @@ test('users with sales permission can view receipt page', function () {
         ->assertSuccessful()
         ->assertInertia(fn ($page) => $page
             ->component('sales/receipt')
+            ->where('store.paper_width', '80mm')
             ->where('sale.invoice_no', 'INV-REC-001'));
 });
 
